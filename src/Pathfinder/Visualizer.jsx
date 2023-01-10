@@ -16,6 +16,7 @@ export default class Visualizer extends Component {
     grid: [],
     mouseIsPressed: false,
     nodesVisited: 0,
+    shortestPathLength: 0,
   };
 }
 
@@ -72,9 +73,12 @@ visualizeDijkstra() {
   const result = dijkstra(grid, startNode, finishNode);
   const visitedNodesInOrder = result.visitedNodesInOrder;
   const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-  this.setState({ nodesVisited: result.nodesVisited });
+  this.setState({
+    nodesVisited: result.nodesVisited,
+    shortestPathLength: nodesInShortestPathOrder.length,
+  });
   this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
-    }
+}
     
     reset() {
         this.clearPath(); // Call the clearPath method
@@ -100,15 +104,16 @@ visualizeDijkstra() {
     }
 }
   render() {
-    const {grid, mouseIsPressed} = this.state;
+    const {grid, mouseIsPressed, nodesVisited, shortestPathLength} = this.state;
 
     return (
-      <>
+        <>
         <button onClick={() => this.visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
             </button>
-            <p>Nodes visited: {this.state.nodesVisited}</p>
             <button onClick={() => this.reset()}>Reset</button>
+            <p>Nodes Visited: {nodesVisited}</p>
+            <p>Shortest Path Length: {shortestPathLength}</p>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (

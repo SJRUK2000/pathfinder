@@ -11,12 +11,13 @@ const FINISH_NODE_COL = 3;
 
 export default class Visualizer extends Component {
   constructor() {
-    super();
-    this.state = {
-      grid: [],
-      mouseIsPressed: false,
-    };
-  }
+  super();
+  this.state = {
+    grid: [],
+    mouseIsPressed: false,
+    nodesVisited: 0,
+  };
+}
 
   componentDidMount() {
     const grid = getInitialGrid();
@@ -64,14 +65,17 @@ export default class Visualizer extends Component {
     }
   }
 
-  visualizeDijkstra() {
-    const {grid} = this.state;
-    const startNode = grid[START_NODE_ROW][START_NODE_COL];
-    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
-  }
+visualizeDijkstra() {
+  const {grid} = this.state;
+  const startNode = grid[START_NODE_ROW][START_NODE_COL];
+  const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  const result = dijkstra(grid, startNode, finishNode);
+  const visitedNodesInOrder = result.visitedNodesInOrder;
+  const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+  this.setState({ nodesVisited: result.nodesVisited });
+  this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    }
+    
     reset() {
         this.clearPath(); // Call the clearPath method
         const grid = getInitialGrid();
@@ -103,6 +107,7 @@ export default class Visualizer extends Component {
         <button onClick={() => this.visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
             </button>
+            <p>Nodes visited: {this.state.nodesVisited}</p>
             <button onClick={() => this.reset()}>Reset</button>
         <div className="grid">
           {grid.map((row, rowIdx) => {

@@ -11,12 +11,14 @@ const FINISH_NODE_COL = 3;
 
 export default class Visualizer extends Component {
   constructor() {
-    super();
-    this.state = {
-      grid: [],
-      mouseIsPressed: false,
-    };
-  }
+  super();
+  this.state = {
+    grid: [],
+    mouseIsPressed: false,
+    nodesVisited: 0,
+    shortestPathLength: 0,
+  };
+}
 
   componentDidMount() {
     const grid = getInitialGrid();
@@ -64,14 +66,20 @@ export default class Visualizer extends Component {
     }
   }
 
-  visualizeDijkstra() {
-    const {grid} = this.state;
-    const startNode = grid[START_NODE_ROW][START_NODE_COL];
-    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
-  }
+visualizeDijkstra() {
+  const {grid} = this.state;
+  const startNode = grid[START_NODE_ROW][START_NODE_COL];
+  const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+  const result = dijkstra(grid, startNode, finishNode);
+  const visitedNodesInOrder = result.visitedNodesInOrder;
+  const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+  this.setState({
+    nodesVisited: result.nodesVisited,
+    shortestPathLength: nodesInShortestPathOrder.length,
+  });
+  this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+}
+    
     reset() {
         this.clearPath(); // Call the clearPath method
         const grid = getInitialGrid();
@@ -96,14 +104,16 @@ export default class Visualizer extends Component {
     }
 }
   render() {
-    const {grid, mouseIsPressed} = this.state;
+    const {grid, mouseIsPressed, nodesVisited, shortestPathLength} = this.state;
 
     return (
-      <>
+        <>
         <button onClick={() => this.visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
             </button>
             <button onClick={() => this.reset()}>Reset</button>
+            <p>Nodes Visited: {nodesVisited}</p>
+            <p>Shortest Path Length: {shortestPathLength}</p>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (

@@ -2,6 +2,12 @@
 It also modifies the nodes so that they each point to the node that came before them in the traversal. 
 This allows us to determine the shortest path between two nodes by starting at the end node 
 and following the chain of previous nodes back to the start.*/
+
+/*To clarify, Dijkstra's algorithm is a method for finding the shortest path between nodes in a graph. 
+It starts by assigning a tentative distance to all nodes and selecting the node with the smallest distance as the current node. 
+It then updates the distance to all adjacent nodes, marks the current node as visited, 
+and selects the next unvisited node with the smallest distance. 
+This process continues until all nodes have been visited or the target node is reached.*/
 export function dijkstra(grid, startNode, finishNode) {
   const visitedNodesInOrder = [];
   startNode.distance = 0;

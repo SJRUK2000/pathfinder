@@ -4,10 +4,10 @@ import {dijkstra, getNodesInShortestPathOrder} from '../algorithms/dijkstra';
 
 import './Visualizer.css';
 
-const START_NODE_ROW = 1;
-const START_NODE_COL = 25;
-const FINISH_NODE_ROW = 4;
-const FINISH_NODE_COL = 3;
+const START_NODE_ROW = 9;
+const START_NODE_COL = 10;
+const FINISH_NODE_ROW = 9;
+const FINISH_NODE_COL = 40;
 
 export default class Visualizer extends Component {
   constructor() {

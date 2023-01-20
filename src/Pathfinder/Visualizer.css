@@ -1,3 +1,19 @@
+.bg {
+    background-color: #67879B;
+}
+.flex-container{
+  display: flex;
+   flex-flow: row wrap;
+  justify-content: space-around;
+}
+.button { 
+  background-color: #67879B; color: #FFFFFF;
+}
+.text {
+  color: #FFFFFF;
+}
 .grid {
-  margin: 100px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }

@@ -4,9 +4,9 @@ import {dijkstra, getNodesInShortestPathOrder} from '../algorithms/dijkstra';
 
 import './Visualizer.css';
 
-const START_NODE_ROW = 9;
+const START_NODE_ROW = 10;
 const START_NODE_COL = 10;
-const FINISH_NODE_ROW = 9;
+const FINISH_NODE_ROW = 10;
 const FINISH_NODE_COL = 40;
 
 export default class Visualizer extends Component {
@@ -79,7 +79,18 @@ visualizeDijkstra() {
   });
   this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
 }
-    
+generateRandomWalls() {
+    const { grid } = this.state;
+    const newGrid = grid.slice();
+    for (let row = 0; row < newGrid.length; row++) {
+        for (let col = 0; col < newGrid[0].length; col++) {
+            if (Math.random() < 0.2) {
+                const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
+                this.setState({ grid: newGrid });
+            }
+        }
+    }
+}
     reset() {
         this.clearPath(); // Call the clearPath method
         const grid = getInitialGrid();
@@ -107,40 +118,39 @@ visualizeDijkstra() {
     const {grid, mouseIsPressed, nodesVisited, shortestPathLength} = this.state;
 
     return (
-        <>
-        <button onClick={() => this.visualizeDijkstra()}>
-          Visualize Dijkstra's Algorithm
-            </button>
-            <button onClick={() => this.reset()}>Reset</button>
-            <p>Nodes Visited: {nodesVisited}</p>
-            <p>Shortest Path Length: {shortestPathLength}</p>
-        <div className="grid">
-          {grid.map((row, rowIdx) => {
-            return (
-              <div key={rowIdx}>
-                {row.map((node, nodeIdx) => {
-                  const {row, col, isFinish, isStart, isWall} = node;
-                  return (
-                    <Node
-                      key={nodeIdx}
-                      col={col}
-                      isFinish={isFinish}
-                      isStart={isStart}
-                      isWall={isWall}
-                      mouseIsPressed={mouseIsPressed}
-                      onMouseDown={(row, col) => this.handleMouseDown(row, col)}
-                      onMouseEnter={(row, col) =>
-                        this.handleMouseEnter(row, col)
-                      }
-                      onMouseUp={() => this.handleMouseUp()}
-                      row={row}></Node>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </>
+        <div className='bg'>
+          <button className='button' onClick={() => this.visualizeDijkstra()}>Visualize Dijkstra's Algorithm</button>
+          <button className='button' onClick={() => this.reset()}>Reset</button>
+          <button className='button' onClick={() => this.generateRandomWalls()}>Generate Random Walls</button>
+          <p className='text'>Nodes Visited: {nodesVisited}</p>
+          <p className='text'>Shortest Path Length: {shortestPathLength}</p>
+          <div className="grid">
+            {grid.map((row, rowIdx) => {
+              return (
+                <div key={rowIdx}>
+                  {row.map((node, nodeIdx) => {
+                    const {row, col, isFinish, isStart, isWall} = node;
+                    return (
+                      <Node
+                        key={nodeIdx}
+                        col={col}
+                        isFinish={isFinish}
+                        isStart={isStart}
+                        isWall={isWall}
+                        mouseIsPressed={mouseIsPressed}
+                        onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                        onMouseEnter={(row, col) =>
+                          this.handleMouseEnter(row, col)
+                        }
+                        onMouseUp={() => this.handleMouseUp()}
+                        row={row}></Node>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+      </div>
     );
   }
 }
@@ -180,3 +190,4 @@ const getNewGridWithWallToggled = (grid, row, col) => {
   newGrid[row][col] = newNode;
   return newGrid;
 };
+

@@ -6,7 +6,8 @@ import Visualizer from './Pathfinder/Visualizer';
 function App() {
   return (
     <div className="App">
-     <Visualizer></Visualizer>
+      <Visualizer>
+     </Visualizer>
     </div>
   );
 }
